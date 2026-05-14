@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C.aprenda — Aprenda C do zero</title>
+  <style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --azul:#185FA5;--azul-escuro:#0C447C;--azul-claro:#E6F1FB;
+  --texto:#1a1a1a;--texto-suave:#555;--borda:#e0e0e0;
+  --fundo:#ffffff;--fundo-alt:#f7f8fa;--verde:#2d7a4f;--vermelho:#c0392b;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;color:var(--texto);background:var(--fundo);line-height:1.6}
+a{text-decoration:none;color:inherit}
+
+/* NAVBAR */
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-bottom:1px solid var(--borda);background:var(--fundo);position:sticky;top:0;z-index:100}
+.logo{font-size:22px;font-weight:700;color:var(--azul);letter-spacing:-.5px}
+.logo-accent{color:#f0a500}
+.nav-links{display:flex;gap:32px}
+.nav-links a{font-size:14px;color:var(--texto-suave);transition:color .2s}
+.nav-links a:hover{color:var(--azul)}
+.btn-login{font-size:13px;padding:8px 20px;border:1px solid var(--borda);border-radius:8px;background:transparent;color:var(--texto);cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-login:hover{background:var(--fundo-alt)}
+
+/* HERO */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:48px;padding:80px 48px;background:var(--fundo-alt);border-bottom:1px solid var(--borda)}
+.hero-content{flex:1;max-width:480px}
+.badge{display:inline-block;background:var(--azul-claro);color:var(--azul);font-size:12px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:20px}
+.hero h1{font-size:42px;font-weight:700;line-height:1.2;margin-bottom:16px;letter-spacing:-1px}
+.highlight{color:var(--azul)}
+.hero p{font-size:16px;color:var(--texto-suave);margin-bottom:32px;line-height:1.7}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{display:inline-block;padding:12px 28px;background:var(--azul);color:#fff;border-radius:8px;font-size:15px;font-weight:600;transition:background .2s;border:none;cursor:pointer;font-family:inherit}
+.btn-primary:hover{background:var(--azul-escuro)}
+.btn-secondary{display:inline-block;padding:12px 28px;background:transparent;color:var(--texto);border-radius:8px;font-size:15px;border:1px solid var(--borda);transition:background .2s;cursor:pointer;font-family:inherit}
+.btn-secondary:hover{background:#efefef}
+.hero-code{flex:1;max-width:420px}
+.code-window{background:#1e1e2e;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.code-bar{display:flex;align-items:center;gap:6px;padding:12px 16px;background:#2a2a3e}
+.dot{width:12px;height:12px;border-radius:50%}
+.dot.red{background:#ff5f57}.dot.yellow{background:#febc2e}.dot.green{background:#28c840}
+.code-filename{font-size:12px;color:#888;margin-left:8px;font-family:monospace}
+.code-body{padding:24px;font-family:'Courier New',monospace;font-size:14px;line-height:1.8;color:#cdd6f4}
+.kw{color:#cba6f7}.fn{color:#89b4fa}.str{color:#a6e3a1}.num{color:#fab387}.cm{color:#6c7086;font-style:italic}
+
+/* STATS */
+.stats{display:flex;justify-content:center;gap:64px;padding:40px 48px;border-bottom:1px solid var(--borda);flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;align-items:center;gap:4px}
+.stat-num{font-size:32px;font-weight:700;color:var(--azul)}
+.stat-label{font-size:13px;color:var(--texto-suave)}
+
+/* PAINEL DE PROGRESSO */
+.painel-progresso{background:var(--azul);padding:28px 48px;border-bottom:1px solid var(--borda)}
+.painel-inner{display:flex;align-items:center;gap:32px;max-width:960px;margin:0 auto;flex-wrap:wrap}
+.painel-texto h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.painel-texto p{font-size:13px;color:rgba(255,255,255,.75)}
+.painel-barra-wrap{flex:1;display:flex;align-items:center;gap:12px;min-width:200px}
+.painel-barra{flex:1;height:8px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden}
+.painel-fill{height:100%;background:#fff;border-radius:4px;transition:width .6s ease}
+.painel-pct{font-size:14px;font-weight:700;color:#fff;min-width:36px}
+.btn-resetar{font-size:12px;padding:7px 16px;border:1px solid rgba(255,255,255,.4);border-radius:6px;background:transparent;color:#fff;cursor:pointer;font-family:inherit;transition:background .2s;white-space:nowrap}
+.btn-resetar:hover{background:rgba(255,255,255,.15)}
+
+/* SEÇÕES */
+.section{padding:80px 48px}
+.section-alt{background:var(--fundo-alt);border-top:1px solid var(--borda);border-bottom:1px solid var(--borda)}
+.section-header{text-align:center;margin-bottom:48px}
+.section-header h2{font-size:28px;font-weight:700;margin-bottom:10px}
+.section-header p{font-size:15px;color:var(--texto-suave)}
+
+/* MÓDULOS */
+.modules-list{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.module-item{border:1px solid var(--borda);border-radius:12px;overflow:hidden;background:var(--fundo);transition:box-shadow .2s,border-color .2s}
+.module-item.aberto{border-color:var(--azul);box-shadow:0 4px 20px rgba(24,95,165,.1)}
+.module-item .module-card{display:flex;gap:16px;align-items:center;padding:20px;cursor:pointer;border:none;border-radius:0;transition:background .15s;width:100%;background:transparent}
+.module-item .module-card:hover{background:var(--fundo-alt)}
+.module-item.aberto .module-card{border-bottom:1px solid var(--borda)}
+.module-icon{font-size:24px;width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.module-info{flex:1}
+.module-info h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.module-info p{font-size:13px;color:var(--texto-suave);margin-bottom:10px}
+.progress-bar{height:4px;background:var(--borda);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.progress-fill{height:100%;background:var(--azul);border-radius:2px;transition:width .5s ease}
+.progress-label{font-size:11px;color:var(--texto-suave)}
+.progress-label.completo{color:var(--verde);font-weight:600}
+.module-chevron{font-size:12px;color:var(--texto-suave);transition:transform .3s ease;flex-shrink:0;margin-left:8px}
+.module-item.aberto .module-chevron{transform:rotate(180deg)}
+
+/* CONTEÚDO DO MÓDULO */
+.module-content{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.module-item.aberto .module-content{max-height:9999px}
+
+/* TEORIA */
+.mod-teoria{padding:36px 40px;border-bottom:1px solid var(--borda)}
+.mod-teoria h4{font-size:15px;font-weight:700;color:var(--azul);margin:28px 0 10px}
+.mod-teoria h4:first-child{margin-top:0}
+.mod-teoria p{font-size:14px;color:var(--texto-suave);line-height:1.8;margin-bottom:10px}
+.mod-teoria code{background:var(--fundo-alt);border:1px solid var(--borda);border-radius:4px;padding:1px 6px;font-size:13px;font-family:'Courier New',monospace;color:var(--azul-escuro)}
+.mod-lista{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:10px;padding-left:4px}
+.mod-lista li{font-size:14px;color:var(--texto-suave);padding-left:18px;position:relative}
+.mod-lista li::before{content:'→';position:absolute;left:0;color:var(--azul);font-size:12px;top:1px}
+.destaque-box{background:var(--azul-claro);border-left:3px solid var(--azul);border-radius:0 8px 8px 0;padding:16px 20px;margin:16px 0;font-size:14px;color:var(--texto)}
+.destaque-box ul{margin-top:8px}
+.fluxo-box{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--fundo-alt);border:1px solid var(--borda);border-radius:8px;padding:14px 20px;margin:14px 0}
+.fluxo-etapa{background:var(--azul);color:#fff;padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600}
+.fluxo-seta{font-size:13px;color:var(--texto-suave);font-style:italic}
+.code-exemplo{background:#1e1e2e;border-radius:10px;overflow:hidden;margin:14px 0}
+.code-exemplo-bar{padding:8px 16px;background:#2a2a3e;font-size:11px;color:#888;font-family:monospace;border-bottom:1px solid rgba(255,255,255,.06)}
+.code-exemplo pre{padding:20px;font-family:'Courier New',monospace;font-size:13px;line-height:1.9;color:#cdd6f4;overflow-x:auto;white-space:pre}
+.tabela-tipos{border:1px solid var(--borda);border-radius:8px;overflow:hidden;margin:14px 0;font-size:13px}
+.tipo-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));border-bottom:1px solid var(--borda)}
+.tipo-row:last-child{border-bottom:none}
+.tipo-row span{padding:10px 14px;border-right:1px solid var(--borda);color:var(--texto-suave);word-break:break-word}
+.tipo-row span:last-child{border-right:none}
+.tipo-row.header span{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;background:var(--fundo-alt)}
+
+/* EXERCÍCIOS */
+.mod-exercicios{padding:28px 40px;border-bottom:1px solid var(--borda)}
+.exercicios-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.exercicios-header h4{font-size:15px;font-weight:700}
+.ex-contador{font-size:12px;color:var(--texto-suave);background:var(--fundo-alt);padding:4px 12px;border-radius:20px}
+.quiz-item{margin-bottom:24px;border:1px solid var(--borda);border-radius:10px;overflow:hidden}
+.quiz-pergunta{padding:14px 18px;font-size:14px;font-weight:600;background:var(--fundo-alt);border-bottom:1px solid var(--borda)}
+.quiz-pergunta-num{display:block;font-size:11px;font-weight:400;color:var(--texto-suave);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.quiz-opcoes{display:flex;flex-direction:column}
+.quiz-opcao{display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--borda);font-size:14px;cursor:pointer;transition:background .15s}
+.quiz-opcao:last-child{border-bottom:none}
+.quiz-opcao:hover{background:var(--azul-claro)}
+.quiz-opcao input[type="radio"]{accent-color:var(--azul);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.quiz-opcao.correta-marcada{background:#eafaf1;color:var(--verde);font-weight:600}
+.quiz-opcao.errada-marcada{background:#fdf0f0;color:var(--vermelho)}
+.mod-acoes{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:4px}
+.btn-verificar{padding:11px 28px;background:var(--azul);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-verificar:hover:not(:disabled){background:var(--azul-escuro)}
+.btn-verificar:disabled{background:#aaa;cursor:default}
+.btn-proximo{padding:11px 24px;background:var(--fundo-alt);color:var(--azul);border:1px solid var(--azul);border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-proximo:hover{background:var(--azul-claro)}
+.mod-resultado{margin-bottom:16px;font-size:14px;font-weight:500;padding:12px 16px;border-radius:8px;display:none;line-height:1.5}
+.mod-resultado.certo{background:#eafaf1;color:var(--verde);display:block}
+.mod-resultado.parcial{background:#fff8e8;color:#8a6000;display:block}
+.mod-resultado.errado{background:#fdf0f0;color:var(--vermelho);display:block}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:999;padding:24px}
+.modal-overlay.hidden{display:none}
+.modal-box{background:#fff;border-radius:16px;padding:48px 40px;max-width:500px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.modal-trophy{font-size:64px;margin-bottom:16px}
+.modal-box h2{font-size:26px;font-weight:700;margin-bottom:12px}
+.modal-box > p{font-size:15px;color:var(--texto-suave);margin-bottom:28px;line-height:1.6}
+.modal-stats{display:flex;justify-content:center;gap:40px;margin-bottom:28px}
+.modal-stat{display:flex;flex-direction:column;align-items:center;gap:4px}
+.modal-stat span{font-size:36px;font-weight:700;color:var(--azul)}
+.modal-stat small{font-size:12px;color:var(--texto-suave)}
+.modal-proximos{text-align:left;background:var(--fundo-alt);border-radius:10px;padding:20px 24px;margin-bottom:28px;font-size:14px}
+.modal-proximos strong{display:block;margin-bottom:10px;color:var(--texto)}
+.modal-proximos ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.modal-proximos li{color:var(--texto-suave);padding-left:4px}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;max-width:860px;margin:0 auto}
+.feature{text-align:center}
+.feature-icon{font-size:28px;margin-bottom:12px}
+.feature h4{font-size:15px;font-weight:600;margin-bottom:6px}
+.feature p{font-size:13px;color:var(--texto-suave);line-height:1.6}
+
+/* FOOTER */
+.footer{text-align:center;padding:32px;border-top:1px solid var(--borda);font-size:13px;color:var(--texto-suave)}
+
+/* CODING EXERCISES */
+.mod-coding{padding:0 40px 36px;border-top:2px dashed var(--borda)}
+.coding-section-header{display:flex;align-items:flex-start;gap:14px;padding:28px 0 20px}
+.coding-section-icon{font-size:28px;flex-shrink:0;margin-top:2px}
+.coding-section-header h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.coding-section-header p{font-size:13px;color:var(--texto-suave);line-height:1.5}
+.coding-item{border:1px solid var(--borda);border-radius:12px;overflow:hidden;margin-bottom:16px;background:var(--fundo)}
+.coding-header{display:flex;align-items:center;gap:10px;padding:14px 20px;background:var(--fundo-alt);border-bottom:1px solid var(--borda)}
+.coding-num{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--azul);background:var(--azul-claro);padding:3px 10px;border-radius:20px;flex-shrink:0}
+.coding-header h5{font-size:14px;font-weight:600;color:var(--texto)}
+.coding-body{padding:20px}
+.coding-descricao{font-size:14px;color:var(--texto);line-height:1.7;margin-bottom:12px}
+.coding-descricao code{background:var(--fundo-alt);border:1px solid var(--borda);border-radius:4px;padding:1px 6px;font-size:13px;font-family:'Courier New',monospace;color:var(--azul-escuro)}
+.coding-dica{display:flex;gap:8px;font-size:13px;color:var(--texto-suave);background:#fffbea;border:1px solid #f0d060;border-radius:8px;padding:10px 14px;margin-bottom:14px;line-height:1.5}
+.editor-wrap{border-radius:10px;overflow:hidden;border:1px solid #30304a;margin-bottom:12px}
+.editor-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:#2a2a3e}
+.editor-lang{font-size:11px;font-weight:700;color:#cba6f7;font-family:monospace;background:rgba(203,166,247,.15);padding:2px 8px;border-radius:4px}
+.editor-filename{font-size:11px;color:#6c7086;font-family:monospace}
+.code-editor{display:block;width:100%;min-height:160px;background:#1e1e2e;color:#cdd6f4;font-family:'Courier New','Consolas',monospace;font-size:13px;line-height:1.9;padding:20px;border:none;resize:vertical;outline:none;tab-size:4;white-space:pre;overflow-x:auto}
+.code-editor:focus{outline:2px solid var(--azul);outline-offset:-2px}
+.coding-acoes{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px}
+.btn-verificar-codigo{display:flex;align-items:center;gap:8px;padding:10px 22px;background:var(--azul);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-verificar-codigo:hover:not(:disabled){background:var(--azul-escuro)}
+.btn-verificar-codigo:disabled{opacity:.7;cursor:default}
+.btnc-spin{display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn-resetar-codigo{padding:10px 16px;background:transparent;color:var(--texto-suave);border:1px solid var(--borda);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-resetar-codigo:hover{background:var(--fundo-alt)}
+.coding-feedback{margin-bottom:12px;border-radius:10px;padding:14px 18px;font-size:14px;line-height:1.6}
+.coding-feedback.hidden{display:none}
+.coding-feedback.fb-carregando{background:#f0f4ff;border:1px solid #c5d3f5;color:var(--azul)}
+.coding-feedback.fb-aviso{background:#fff8e8;border:1px solid #f0d060;color:#7a5900}
+.coding-feedback.fb-certo{background:#eafaf1;border:1px solid #a8dfc0;color:var(--verde)}
+.coding-feedback.fb-errado{background:#fdf0f0;border:1px solid #f5b8b0;color:var(--vermelho)}
+.fb-nota{display:inline-block;font-weight:700;font-size:13px;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+.fb-certo .fb-nota{background:rgba(45,122,79,.15);color:var(--verde)}
+.fb-errado .fb-nota{background:rgba(192,57,43,.12);color:var(--vermelho)}
+.fb-texto{font-size:14px;margin-bottom:4px}
+.fb-dica{font-size:13px;color:var(--texto-suave);margin-top:6px;font-style:italic}
+
+@media(max-width:768px){
+  .navbar{padding:16px 24px}.nav-links{display:none}
+  .hero{flex-direction:column;padding:48px 24px;text-align:center}
+  .hero h1{font-size:30px}.hero-btns{justify-content:center}
+  .hero-code{max-width:100%;width:100%}
+  .stats{gap:32px;padding:32px 24px}
+  .section{padding:48px 24px}
+  .painel-progresso{padding:24px}
+  .mod-teoria{padding:24px}
+  .mod-exercicios{padding:24px}
+  .mod-coding{padding:0 24px 28px}
+  .code-editor{font-size:12px;min-height:140px;padding:14px}
+}
+  </style>
+</head>
+<body>
+
+  <!-- MODAL DE CONCLUSÃO -->
+  <div id="modal-conclusao" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-trophy">🏆</div>
+      <h2>Trilha concluída!</h2>
+      <p>Parabéns! Você completou todos os 4 módulos e está pronto para os próximos passos em C.</p>
+      <div class="modal-stats">
+        <div class="modal-stat"><span id="modal-acertos">0</span><small>questões corretas</small></div>
+        <div class="modal-stat"><span id="modal-pct">0%</span><small>aproveitamento</small></div>
+      </div>
+      <div class="modal-proximos">
+        <strong>Próximos passos sugeridos:</strong>
+        <ul>
+          <li>📌 Ponteiros e gerenciamento de memória</li>
+          <li>📋 Arrays e strings</li>
+          <li>📁 Arquivos e I/O avançado</li>
+          <li>🔗 Estruturas (struct) e uniões</li>
+        </ul>
+      </div>
+      <button class="btn-primary" onclick="fecharModal()">Fechar</button>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">C<span class="logo-accent">.</span>aprenda</div>
+    <div class="nav-links">
+      <a href="#modulos">Módulos</a>
+      <a href="#sobre">Sobre</a>
+    </div>
+    <button class="btn-login" onclick="alert('Login em breve!')">Entrar</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="badge">Gratuito · Para iniciantes</span>
+      <h1>Aprenda linguagem <span class="highlight">C</span> do zero</h1>
+      <p>Teoria aprofundada, exercícios interativos e progresso salvo para quem está começando agora.</p>
+      <div class="hero-btns">
+        <a href="#modulos" class="btn-primary">Começar agora</a>
+        <a href="#sobre" class="btn-secondary">Saiba mais</a>
+      </div>
+    </div>
+    <div class="hero-code">
+      <div class="code-window">
+        <div class="code-bar">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="code-filename">main.c</span>
+        </div>
+        <pre class="code-body"><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">printf</span>(<span class="str">"Olá, mundo!\n"</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat"><span class="stat-num">4</span><span class="stat-label">Módulos</span></div>
+    <div class="stat"><span class="stat-num">24</span><span class="stat-label">Exercícios</span></div>
+    <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Gratuito</span></div>
+    <div class="stat"><span class="stat-num">0</span><span class="stat-label">Pré-requisitos</span></div>
+  </section>
+
+  <!-- PAINEL DE PROGRESSO GERAL -->
+  <section class="painel-progresso" id="painel">
+    <div class="painel-inner">
+      <div class="painel-texto">
+        <h3>Seu progresso geral</h3>
+        <p id="painel-desc">Você ainda não começou nenhum módulo.</p>
+      </div>
+      <div class="painel-barra-wrap">
+        <div class="painel-barra"><div class="painel-fill" id="painel-fill" style="width:0%"></div></div>
+        <span class="painel-pct" id="painel-pct">0%</span>
+      </div>
+      <button class="btn-resetar" onclick="resetarProgresso()">↺ Resetar</button>
+    </div>
+  </section>
+
+  <!-- MÓDULOS -->
+  <section class="section" id="modulos">
+    <div class="section-header">
+      <h2>Trilha de aprendizado</h2>
+      <p>Siga os módulos em ordem ou vá direto ao que precisa.</p>
+    </div>
+    <div class="modules-list">
+
+      <!-- MÓDULO 1 -->
+      <div class="module-item" id="mod-intro">
+        <div class="module-card" onclick="toggleModulo('intro')">
+          <div class="module-icon" style="background:#e8f4fd;">🏁</div>
+          <div class="module-info">
+            <h3>Módulo 1 — Introdução ao C</h3>
+            <p>História, compilação, estrutura de um programa, entrada e saída</p>
+            <div class="progress-bar"><div class="progress-fill" id="fill-intro" style="width:0%"></div></div>
+            <span class="progress-label" id="label-intro">Não iniciado</span>
+          </div>
+          <span class="module-chevron" id="chev-intro">▼</span>
+        </div>
+        <div class="module-content" id="content-intro">
+          <div class="mod-teoria">
+            <h4>O que é a linguagem C?</h4>
+            <p>C é uma linguagem de programação de propósito geral criada em <strong>1972</strong> por <strong>Dennis Ritchie</strong> nos Laboratórios Bell. Nasceu para reescrever o UNIX de forma portável e se tornou a base de praticamente toda a computação moderna: Linux, Windows, Python e Java foram escritos (total ou parcialmente) em C.</p>
+            <div class="destaque-box">
+              <strong>Por que aprender C?</strong>
+              <ul class="mod-lista">
+                <li>Você entende memória, ponteiros e desempenho de verdade</li>
+                <li>Facilita aprender C++, Java, Python e outras linguagens</li>
+                <li>Muito usado em sistemas embarcados, jogos e sistemas operacionais</li>
+                <li>Exigido em muitos processos seletivos e disciplinas universitárias</li>
+              </ul>
+            </div>
+            <h4>Compilada vs. Interpretada</h4>
+            <p>C é compilada: você escreve o código-fonte, o compilador transforma em código de máquina (binário), e a CPU executa esse binário diretamente — por isso C é muito rápido.</p>
+            <div class="fluxo-box">
+              <span class="fluxo-etapa">Código fonte (.c)</span>
+              <span class="fluxo-seta">→ GCC →</span>
+              <span class="fluxo-etapa">Binário</span>
+              <span class="fluxo-seta">→ CPU →</span>
+              <span class="fluxo-etapa">Resultado</span>
+            </div>
+            <h4>Estrutura de um programa C</h4>
+            <p>Todo programa C tem obrigatoriamente a função <code>main()</code> — o ponto de entrada onde a execução começa.</p>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">main.c</div>
+              <pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>   <span class="cm">// 1. Importa biblioteca de entrada/saída</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {             <span class="cm">// 2. Função principal (obrigatória)</span>
+    <span class="fn">printf</span>(<span class="str">"Olá!\n"</span>);   <span class="cm">// 3. Imprime na tela (\n = nova linha)</span>
+    <span class="kw">return</span> <span class="num">0</span>;           <span class="cm">// 4. 0 = programa terminou com sucesso</span>
+}</pre>
+            </div>
+            <h4>Compilando com GCC</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">terminal</div>
+              <pre><span class="cm"># Compilar</span>
+gcc main.c -o meu_programa
+
+<span class="cm"># Executar</span>
+./meu_programa</pre>
+            </div>
+            <h4>Erros comuns de iniciante</h4>
+            <div class="tabela-tipos">
+              <div class="tipo-row header"><span>Erro</span><span>Causa</span><span>Solução</span></div>
+              <div class="tipo-row"><span>Esquecer <code>;</code></span><span>Toda instrução precisa de ponto e vírgula</span><span>Adicione <code>;</code> ao final</span></div>
+              <div class="tipo-row"><span>Esquecer <code>#include</code></span><span><code>printf</code> não é reconhecido</span><span>Adicione <code>#include &lt;stdio.h&gt;</code></span></div>
+              <div class="tipo-row"><span>Chaves desbalanceadas</span><span>Todo <code>{</code> precisa de um <code>}</code></span><span>Conte e alinhe as chaves</span></div>
+              <div class="tipo-row"><span>Usar <code>=</code> em vez de <code>==</code></span><span>Atribuição em vez de comparação</span><span>Use <code>==</code> para comparar</span></div>
+            </div>
+          </div>
+          <div class="mod-exercicios">
+            <div class="exercicios-header">
+              <h4>Exercícios do módulo</h4>
+              <span class="ex-contador" id="excount-intro">0 / 6 corretos</span>
+            </div>
+            <div class="quiz" id="quiz-intro"></div>
+            <div class="mod-resultado" id="res-intro"></div>
+            <div class="mod-acoes">
+              <button class="btn-verificar" id="btn-intro" onclick="verificarQuiz('intro')">Verificar respostas</button>
+              <button class="btn-proximo" id="prox-intro" style="display:none" onclick="proximoModulo('intro')">Próximo módulo →</button>
+            </div>
+          </div>
+          <div class="mod-coding">
+            <div class="coding-section-header">
+              <span class="coding-section-icon">⌨️</span>
+              <div>
+                <h4>Pratique escrevendo código</h4>
+                <p>Coloque em prática o que aprendeu. A IA vai analisar seu código e dar feedback detalhado.</p>
+              </div>
+            </div>
+            <div id="coding-intro"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÓDULO 2 -->
+      <div class="module-item" id="mod-variaveis">
+        <div class="module-card" onclick="toggleModulo('variaveis')">
+          <div class="module-icon" style="background:#eaf7ee;">📦</div>
+          <div class="module-info">
+            <h3>Módulo 2 — Variáveis e tipos de dados</h3>
+            <p>int, float, double, char, operadores aritméticos, scanf e constantes</p>
+            <div class="progress-bar"><div class="progress-fill" id="fill-variaveis" style="width:0%"></div></div>
+            <span class="progress-label" id="label-variaveis">Não iniciado</span>
+          </div>
+          <span class="module-chevron" id="chev-variaveis">▼</span>
+        </div>
+        <div class="module-content" id="content-variaveis">
+          <div class="mod-teoria">
+            <h4>O que são variáveis?</h4>
+            <p>Uma variável é um espaço nomeado na memória RAM onde guardamos um valor durante a execução do programa. Em C, toda variável precisa ser declarada com um <strong>tipo</strong> antes de ser usada.</p>
+            <h4>Tipos primitivos em C</h4>
+            <div class="tabela-tipos">
+              <div class="tipo-row header"><span>Tipo</span><span>Tamanho</span><span>Faixa aproximada</span><span>Uso</span></div>
+              <div class="tipo-row"><span><code>int</code></span><span>4 bytes</span><span>−2 bi a +2 bi</span><span>Números inteiros</span></div>
+              <div class="tipo-row"><span><code>float</code></span><span>4 bytes</span><span>6–7 dígitos decimais</span><span>Decimais simples</span></div>
+              <div class="tipo-row"><span><code>double</code></span><span>8 bytes</span><span>15–16 dígitos decimais</span><span>Decimais precisos</span></div>
+              <div class="tipo-row"><span><code>char</code></span><span>1 byte</span><span>0 a 255 (ASCII)</span><span>Um caractere</span></div>
+              <div class="tipo-row"><span><code>long</code></span><span>8 bytes</span><span>Inteiros grandes</span><span>Contadores grandes</span></div>
+            </div>
+            <h4>Declarando e inicializando variáveis</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">declaracao.c</div>
+              <pre><span class="kw">int</span> idade = <span class="num">20</span>;
+<span class="kw">float</span> altura = <span class="num">1.75</span>;
+<span class="kw">double</span> pi = <span class="num">3.14159265358979</span>;
+<span class="kw">char</span> letra = <span class="str">'A'</span>;        <span class="cm">// char usa aspas simples!</span>
+
+<span class="cm">// CUIDADO: declarar sem inicializar = lixo de memória</span>
+<span class="kw">int</span> x;    <span class="cm">// x tem valor indefinido!</span>
+x = <span class="num">10</span>;  <span class="cm">// agora está seguro</span></pre>
+            </div>
+            <h4>printf() — Especificadores de formato</h4>
+            <div class="tabela-tipos">
+              <div class="tipo-row header"><span>Especificador</span><span>Tipo</span><span>Exemplo de saída</span></div>
+              <div class="tipo-row"><span><code>%d</code></span><span><code>int</code></span><span><code>42</code></span></div>
+              <div class="tipo-row"><span><code>%f</code></span><span><code>float/double</code></span><span><code>3.140000</code></span></div>
+              <div class="tipo-row"><span><code>%.2f</code></span><span><code>float/double</code></span><span><code>3.14</code> (2 casas)</span></div>
+              <div class="tipo-row"><span><code>%c</code></span><span><code>char</code></span><span><code>A</code></span></div>
+              <div class="tipo-row"><span><code>%s</code></span><span>string</span><span><code>Olá</code></span></div>
+            </div>
+            <h4>scanf() — Lendo dados do usuário</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">leitura.c</div>
+              <pre><span class="kw">int</span> idade;
+<span class="fn">printf</span>(<span class="str">"Digite sua idade: "</span>);
+<span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;idade);   <span class="cm">// & é obrigatório!</span>
+<span class="fn">printf</span>(<span class="str">"Você tem %d anos.\n"</span>, idade);</pre>
+            </div>
+            <h4>Operadores aritméticos</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">operadores.c</div>
+              <pre><span class="kw">int</span> a = <span class="num">10</span>, b = <span class="num">3</span>;
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a + b);   <span class="cm">// 13  — soma</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a - b);   <span class="cm">// 7   — subtração</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a * b);   <span class="cm">// 30  — multiplicação</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a / b);   <span class="cm">// 3   — divisão INTEIRA</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a % b);   <span class="cm">// 1   — resto da divisão</span></pre>
+            </div>
+          </div>
+          <div class="mod-exercicios">
+            <div class="exercicios-header">
+              <h4>Exercícios do módulo</h4>
+              <span class="ex-contador" id="excount-variaveis">0 / 6 corretos</span>
+            </div>
+            <div class="quiz" id="quiz-variaveis"></div>
+            <div class="mod-resultado" id="res-variaveis"></div>
+            <div class="mod-acoes">
+              <button class="btn-verificar" id="btn-variaveis" onclick="verificarQuiz('variaveis')">Verificar respostas</button>
+              <button class="btn-proximo" id="prox-variaveis" style="display:none" onclick="proximoModulo('variaveis')">Próximo módulo →</button>
+            </div>
+          </div>
+          <div class="mod-coding">
+            <div class="coding-section-header">
+              <span class="coding-section-icon">⌨️</span>
+              <div>
+                <h4>Pratique escrevendo código</h4>
+                <p>Coloque em prática o que aprendeu. A IA vai analisar seu código e dar feedback detalhado.</p>
+              </div>
+            </div>
+            <div id="coding-variaveis"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÓDULO 3 -->
+      <div class="module-item" id="mod-controle">
+        <div class="module-card" onclick="toggleModulo('controle')">
+          <div class="module-icon" style="background:#fff8e8;">🔀</div>
+          <div class="module-info">
+            <h3>Módulo 3 — Estruturas de controle</h3>
+            <p>if/else, operadores lógicos, switch, for, while, do-while, break e continue</p>
+            <div class="progress-bar"><div class="progress-fill" id="fill-controle" style="width:0%"></div></div>
+            <span class="progress-label" id="label-controle">Não iniciado</span>
+          </div>
+          <span class="module-chevron" id="chev-controle">▼</span>
+        </div>
+        <div class="module-content" id="content-controle">
+          <div class="mod-teoria">
+            <h4>if / else if / else</h4>
+            <p>Permitem executar blocos de código apenas quando uma condição é verdadeira. Em C, <code>0</code> é falso; qualquer outro valor é verdadeiro.</p>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">condicional.c</div>
+              <pre><span class="kw">int</span> nota = <span class="num">7</span>;
+<span class="kw">if</span> (nota >= <span class="num">9</span>) {
+    <span class="fn">printf</span>(<span class="str">"Excelente!\n"</span>);
+} <span class="kw">else if</span> (nota >= <span class="num">7</span>) {
+    <span class="fn">printf</span>(<span class="str">"Aprovado!\n"</span>);   <span class="cm">// cai aqui</span>
+} <span class="kw">else</span> {
+    <span class="fn">printf</span>(<span class="str">"Reprovado\n"</span>);
+}</pre>
+            </div>
+            <h4>Operadores de comparação e lógicos</h4>
+            <div class="tabela-tipos">
+              <div class="tipo-row header"><span>Operador</span><span>Significado</span><span>Exemplo</span></div>
+              <div class="tipo-row"><span><code>==</code></span><span>igual a</span><span><code>a == b</code></span></div>
+              <div class="tipo-row"><span><code>!=</code></span><span>diferente de</span><span><code>a != b</code></span></div>
+              <div class="tipo-row"><span><code>&gt; / &lt;</code></span><span>maior / menor</span><span><code>a &gt; 5</code></span></div>
+              <div class="tipo-row"><span><code>&amp;&amp;</code></span><span>E lógico</span><span><code>a &gt; 0 &amp;&amp; b &gt; 0</code></span></div>
+              <div class="tipo-row"><span><code>||</code></span><span>OU lógico</span><span><code>a==0 || b==0</code></span></div>
+            </div>
+            <h4>switch — múltiplas opções</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">switch.c</div>
+              <pre><span class="kw">int</span> dia = <span class="num">3</span>;
+<span class="kw">switch</span> (dia) {
+    <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printf</span>(<span class="str">"Segunda\n"</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">3</span>: <span class="fn">printf</span>(<span class="str">"Quarta\n"</span>);  <span class="kw">break</span>;
+    <span class="kw">default</span>: <span class="fn">printf</span>(<span class="str">"Outro dia\n"</span>);
+}</pre>
+            </div>
+            <h4>Laço for</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">for.c</div>
+              <pre><span class="cm">// Imprime 1 até 5</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= <span class="num">5</span>; i++) {
+    <span class="fn">printf</span>(<span class="str">"%d "</span>, i);   <span class="cm">// 1 2 3 4 5</span>
+}</pre>
+            </div>
+            <h4>while e do-while</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">while.c</div>
+              <pre><span class="cm">// while: verifica ANTES de executar</span>
+<span class="kw">int</span> i = <span class="num">1</span>;
+<span class="kw">while</span> (i &lt;= <span class="num">5</span>) {
+    <span class="fn">printf</span>(<span class="str">"%d\n"</span>, i++);
+}
+
+<span class="cm">// do-while: executa PELO MENOS UMA VEZ</span>
+<span class="kw">int</span> senha;
+<span class="kw">do</span> {
+    <span class="fn">printf</span>(<span class="str">"Digite 1234: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;senha);
+} <span class="kw">while</span> (senha != <span class="num">1234</span>);</pre>
+            </div>
+          </div>
+          <div class="mod-exercicios">
+            <div class="exercicios-header">
+              <h4>Exercícios do módulo</h4>
+              <span class="ex-contador" id="excount-controle">0 / 6 corretos</span>
+            </div>
+            <div class="quiz" id="quiz-controle"></div>
+            <div class="mod-resultado" id="res-controle"></div>
+            <div class="mod-acoes">
+              <button class="btn-verificar" id="btn-controle" onclick="verificarQuiz('controle')">Verificar respostas</button>
+              <button class="btn-proximo" id="prox-controle" style="display:none" onclick="proximoModulo('controle')">Próximo módulo →</button>
+            </div>
+          </div>
+          <div class="mod-coding">
+            <div class="coding-section-header">
+              <span class="coding-section-icon">⌨️</span>
+              <div>
+                <h4>Pratique escrevendo código</h4>
+                <p>Coloque em prática o que aprendeu. A IA vai analisar seu código e dar feedback detalhado.</p>
+              </div>
+            </div>
+            <div id="coding-controle"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÓDULO 4 -->
+      <div class="module-item" id="mod-funcoes">
+        <div class="module-card" onclick="toggleModulo('funcoes')">
+          <div class="module-icon" style="background:#fdf0f0;">⚙️</div>
+          <div class="module-info">
+            <h3>Módulo 4 — Funções</h3>
+            <p>Declaração, parâmetros, retorno, escopo, passagem por referência e recursão</p>
+            <div class="progress-bar"><div class="progress-fill" id="fill-funcoes" style="width:0%"></div></div>
+            <span class="progress-label" id="label-funcoes">Não iniciado</span>
+          </div>
+          <span class="module-chevron" id="chev-funcoes">▼</span>
+        </div>
+        <div class="module-content" id="content-funcoes">
+          <div class="mod-teoria">
+            <h4>O que são funções?</h4>
+            <p>Funções são blocos de código nomeados e reutilizáveis que realizam uma tarefa específica. São o principal mecanismo para <strong>organizar</strong> e <strong>reutilizar</strong> código em C.</p>
+            <div class="destaque-box">
+              <strong>Estrutura de uma função:</strong>
+              <pre style="margin-top:8px;font-size:13px;font-family:'Courier New',monospace;color:#1a1a1a;line-height:1.7">tipo_retorno nome_funcao(tipo param1, tipo param2) {
+    // corpo da função
+    return valor;
+}</pre>
+            </div>
+            <h4>Protótipos, definição e chamada</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">funcoes.c</div>
+              <pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="cm">// Protótipos</span>
+<span class="kw">int</span> <span class="fn">soma</span>(<span class="kw">int</span> a, <span class="kw">int</span> b);
+<span class="kw">void</span> <span class="fn">imprimirLinha</span>();
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">imprimirLinha</span>();
+    <span class="fn">printf</span>(<span class="str">"Soma: %d\n"</span>, <span class="fn">soma</span>(<span class="num">10</span>, <span class="num">5</span>));
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="kw">int</span> <span class="fn">soma</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) { <span class="kw">return</span> a + b; }
+<span class="kw">void</span> <span class="fn">imprimirLinha</span>() { <span class="fn">printf</span>(<span class="str">"----------\n"</span>); }</pre>
+            </div>
+            <h4>Passagem por valor vs. por referência</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">referencia.c</div>
+              <pre><span class="cm">// Por referência — altera o original</span>
+<span class="kw">void</span> <span class="fn">dobra</span>(<span class="kw">int</span> *n) {
+    *n = *n * <span class="num">2</span>;
+}
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> x = <span class="num">5</span>;
+    <span class="fn">dobra</span>(&amp;x);
+    <span class="fn">printf</span>(<span class="str">"%d\n"</span>, x);  <span class="cm">// 10</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+            </div>
+            <h4>Recursão</h4>
+            <div class="code-exemplo">
+              <div class="code-exemplo-bar">recursao.c</div>
+              <pre><span class="kw">int</span> <span class="fn">fatorial</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;   <span class="cm">// condição de parada</span>
+    <span class="kw">return</span> n * <span class="fn">fatorial</span>(n - <span class="num">1</span>);
+}
+<span class="cm">// fatorial(5) = 120</span></pre>
+            </div>
+          </div>
+          <div class="mod-exercicios">
+            <div class="exercicios-header">
+              <h4>Exercícios do módulo</h4>
+              <span class="ex-contador" id="excount-funcoes">0 / 6 corretos</span>
+            </div>
+            <div class="quiz" id="quiz-funcoes"></div>
+            <div class="mod-resultado" id="res-funcoes"></div>
+            <div class="mod-acoes">
+              <button class="btn-verificar" id="btn-funcoes" onclick="verificarQuiz('funcoes')">Verificar respostas</button>
+              <button class="btn-proximo" id="prox-funcoes" style="display:none" onclick="concluirTrilha()">🏆 Concluir trilha</button>
+            </div>
+          </div>
+          <div class="mod-coding">
+            <div class="coding-section-header">
+              <span class="coding-section-icon">⌨️</span>
+              <div>
+                <h4>Pratique escrevendo código</h4>
+                <p>Coloque em prática o que aprendeu. A IA vai analisar seu código e dar feedback detalhado.</p>
+              </div>
+            </div>
+            <div id="coding-funcoes"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="section section-alt" id="sobre">
+    <div class="section-header">
+      <h2>Sobre o projeto</h2>
+      <p>Este site foi criado como projeto integrador com o objetivo de tornar o aprendizado de C acessível para todos.</p>
+    </div>
+    <div class="features">
+      <div class="feature"><div class="feature-icon">📖</div><h4>Teoria aprofundada</h4><p>Conteúdo explicativo com exemplos de código reais e comentados</p></div>
+      <div class="feature"><div class="feature-icon">🎯</div><h4>Exercícios interativos</h4><p>6 questões por módulo com feedback imediato</p></div>
+      <div class="feature"><div class="feature-icon">🤖</div><h4>IA integrada</h4><p>Verificação automática de código com feedback personalizado pela IA</p></div>
+      <div class="feature"><div class="feature-icon">💡</div><h4>Para iniciantes</h4><p>Sem pré-requisitos, comece do absoluto zero</p></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>C.aprenda · Projeto Integrador 2026</p>
+  </footer>
+
+  <script>
+// =====================
+// DADOS
+// =====================
+var CODING_EXERCISES = {
+  intro: [
+    {id:'intro_c1',titulo:'Olá, C!',descricao:'Escreva um programa completo em C que imprima exatamente: <code>Olá, mundo!</code> (com acento e exclamação).',starter:'#include <stdio.h>\n\nint main() {\n    // escreva seu código aqui\n    \n    return 0;\n}',dica:'Use printf() com o texto entre aspas duplas e \\n para nova linha.',criterio:'O programa deve incluir #include <stdio.h>, a função main() e usar printf para imprimir "Olá, mundo!"'},
+    {id:'intro_c2',titulo:'Duas mensagens',descricao:'Escreva um programa que imprima duas linhas:<br><code>Meu nome é: C</code><br><code>Ano de criação: 1972</code>',starter:'#include <stdio.h>\n\nint main() {\n    // imprima as duas linhas aqui\n    \n    return 0;\n}',dica:'Use dois printf(), cada um com \\n no final.',criterio:'O programa deve imprimir as duas linhas corretas usando printf().'}
+  ],
+  variaveis: [
+    {id:'var_c1',titulo:'Apresentação com variáveis',descricao:'Declare <code>int idade = 18</code> e <code>float altura = 1.75</code>. Imprima:<br><code>Idade: 18</code><br><code>Altura: 1.75</code>',starter:'#include <stdio.h>\n\nint main() {\n    // declare as variáveis aqui\n    \n    // imprima os valores aqui\n    \n    return 0;\n}',dica:'Use %d para int e %.2f para float no printf().',criterio:'Declarar int idade e float altura com os valores corretos e imprimi-los com %d e %f.'},
+    {id:'var_c2',titulo:'Cálculo de área',descricao:'Declare <code>float base = 5.0</code> e <code>float altura = 3.0</code>. Calcule a área do triângulo e imprima:<br><code>Área do triângulo: 7.50</code>',starter:'#include <stdio.h>\n\nint main() {\n    float base = 5.0;\n    float altura = 3.0;\n    // calcule a área e imprima\n    \n    return 0;\n}',dica:'Guarde o resultado em float area e use %.2f.',criterio:'Calcular área (7.5) e imprimir com 2 casas decimais.'}
+  ],
+  controle: [
+    {id:'ctrl_c1',titulo:'Par ou ímpar',descricao:'Declare <code>int num = 7</code>. Use <code>if/else</code> para imprimir se é par ou ímpar.',starter:'#include <stdio.h>\n\nint main() {\n    int num = 7;\n    // use if/else\n    \n    return 0;\n}',dica:'Use o operador %: se num % 2 == 0, é par.',criterio:'Usar if/else com % para verificar par ou ímpar.'},
+    {id:'ctrl_c2',titulo:'Contagem regressiva',descricao:'Use um <code>for</code> para imprimir de 5 até 1, depois imprima: <code>Fogo!</code>',starter:'#include <stdio.h>\n\nint main() {\n    // escreva o for aqui\n    \n    return 0;\n}',dica:'O for começa em 5, continua enquanto i >= 1, e decrementa (i--).',criterio:'Laço for de 5 até 1 (decrescente) e depois imprime "Fogo!".'}
+  ],
+  funcoes: [
+    {id:'func_c1',titulo:'Função soma',descricao:'Crie <code>int soma(int a, int b)</code>. Na main, chame com 8 e 5 e imprima:<br><code>8 + 5 = 13</code>',starter:'#include <stdio.h>\n\n// protótipo aqui\n\nint main() {\n    // chame a função\n    \n    return 0;\n}\n\n// implemente soma aqui\n',dica:'Declare o protótipo antes da main, implemente depois.',criterio:'Função soma() que retorna a+b, chamada com 8 e 5, imprime "8 + 5 = 13".'},
+    {id:'func_c2',titulo:'Função void de saudação',descricao:'Crie <code>void saudacao()</code> que imprima:<br><code>=== Bem-vindo ao C! ===</code><br>Chame duas vezes na <code>main()</code>.',starter:'#include <stdio.h>\n\n// protótipo\n\nint main() {\n    // chame saudacao() duas vezes\n    \n    return 0;\n}\n\n// implemente saudacao() aqui\n',dica:'Funções void não retornam nada. Basta usar printf dentro.',criterio:'Função void saudacao() que imprime a mensagem, chamada duas vezes.'}
+  ]
+};
+
+var QUIZZES = {
+  intro:[
+    {p:'Em que ano a linguagem C foi criada?',o:['1960','1972','1985','1991'],c:1},
+    {p:'Quem criou a linguagem C?',o:['Linus Torvalds','Bjarne Stroustrup','Dennis Ritchie','James Gosling'],c:2},
+    {p:'O que o #include &lt;stdio.h&gt; faz?',o:['Define a função main()','Encerra o programa','Inclui a biblioteca de entrada e saída','Declara variáveis globais'],c:2},
+    {p:'Qual é o valor de retorno correto de main() com sucesso?',o:['1','-1','0','void'],c:2},
+    {p:'O que \\n representa dentro de uma string?',o:['Nulo','Nova linha','Tabulação','Barra invertida'],c:1},
+    {p:'C é uma linguagem:',o:['Interpretada','Compilada','Ambas','Nenhuma'],c:1}
+  ],
+  variaveis:[
+    {p:'Qual tipo armazena números inteiros em C?',o:['float','char','int','double'],c:2},
+    {p:'Qual especificador imprime um float com printf()?',o:['%d','%c','%s','%f'],c:3},
+    {p:'Como declarar int "idade" com valor 18?',o:['idade = 18;','int idade = 18;','var idade = 18;','integer idade = 18;'],c:1},
+    {p:'Qual função lê dados do usuário em C?',o:['input()','read()','scanf()','gets()'],c:2},
+    {p:'O que acontece ao declarar "int x;" sem inicializar?',o:['x vale 0','x tem valor indefinido','Erro de compilação','x vale -1'],c:1},
+    {p:'Qual operador retorna o resto da divisão?',o:['/','*','%','//'],c:2}
+  ],
+  controle:[
+    {p:'Qual estrutura repete um bloco um número conhecido de vezes?',o:['if','switch','for','else'],c:2},
+    {p:'O que acontece sem "break" no switch?',o:['Erro','Programa encerra','Cai para o próximo case','Nada'],c:2},
+    {p:'Qual operador representa "E lógico"?',o:['&','|','&&','||'],c:2},
+    {p:'O do-while executa o bloco:',o:['Zero vezes se falso','Pelo menos uma vez','Exatamente duas vezes','Infinitamente'],c:1},
+    {p:'Saída de: for(int i=0; i&lt;3; i++) printf("%d ",i);',o:['1 2 3','0 1 2','0 1 2 3','1 2'],c:1},
+    {p:'"continue" dentro de um laço:',o:['Encerra o laço','Reinicia o programa','Pula para a próxima iteração','É igual ao break'],c:2}
+  ],
+  funcoes:[
+    {p:'O que "void" no retorno de uma função significa?',o:['Retorna zero','Não retorna nenhum valor','Retorna ponteiro','É privada'],c:1},
+    {p:'O que é um protótipo de função?',o:['A implementação completa','Um comentário','A assinatura declarada antes do uso','Um tipo de variável'],c:2},
+    {p:'Qual palavra-chave devolve um valor de dentro de uma função?',o:['send','output','return','give'],c:2},
+    {p:'C passa argumentos para funções por padrão:',o:['Por referência','Por valor (cópia)','Por ponteiro','Por endereço'],c:1},
+    {p:'O que é recursão?',o:['Uma função chamar outra','Uma função chamar a si mesma','Um laço infinito','Um tipo de variável global'],c:1},
+    {p:'O que * faz com ponteiros?',o:['Multiplica valores','Declara constante','Acessa o valor no endereço','Cria uma cópia'],c:2}
+  ]
+};
+
+var ORDEM=['intro','variaveis','controle','funcoes'];
+var PROXIMO={intro:'variaveis',variaveis:'controle',controle:'funcoes'};
+
+// =====================
+// PROGRESSO
+// =====================
+function salvarProgresso(m,p){localStorage.setItem('prog_'+m,p);atualizarPainelGeral();}
+function carregarProgresso(){ORDEM.forEach(function(m){var p=localStorage.getItem('prog_'+m);if(p!==null)atualizarBarra(m,parseInt(p));});atualizarPainelGeral();}
+function atualizarBarra(m,p){var f=document.getElementById('fill-'+m);var l=document.getElementById('label-'+m);if(!f||!l)return;f.style.width=p+'%';if(p>=100){l.textContent='Completo ✓';l.className='progress-label completo';}else if(p>0){l.textContent=p+'% concluído';l.className='progress-label';}else{l.textContent='Não iniciado';l.className='progress-label';}}
+function atualizarPainelGeral(){var total=0;ORDEM.forEach(function(m){total+=parseInt(localStorage.getItem('prog_'+m)||0);});var media=Math.round(total/ORDEM.length);document.getElementById('painel-fill').style.width=media+'%';document.getElementById('painel-pct').textContent=media+'%';var desc=document.getElementById('painel-desc');var conc=ORDEM.filter(function(m){return parseInt(localStorage.getItem('prog_'+m)||0)>=100;}).length;if(media===0)desc.textContent='Você ainda não começou nenhum módulo.';else if(conc===4)desc.textContent='Trilha concluída! Parabéns! 🎉';else desc.textContent=conc+' de 4 módulo(s) concluído(s).';}
+function resetarProgresso(){if(!confirm('Resetar todo o progresso?'))return;ORDEM.forEach(function(m){localStorage.removeItem('prog_'+m);});ORDEM.forEach(function(m){atualizarBarra(m,0);});atualizarPainelGeral();document.querySelectorAll('.module-item').forEach(function(el){el.classList.remove('aberto');});renderizarQuizzes();renderizarCodingExercises();}
+
+// =====================
+// MÓDULOS
+// =====================
+function toggleModulo(m){var item=document.getElementById('mod-'+m);var aberto=item.classList.contains('aberto');document.querySelectorAll('.module-item').forEach(function(el){el.classList.remove('aberto');});if(!aberto){item.classList.add('aberto');setTimeout(function(){item.scrollIntoView({behavior:'smooth',block:'start'});},100);}}
+function proximoModulo(atual){var prox=PROXIMO[atual];if(prox)toggleModulo(prox);}
+
+// =====================
+// QUIZ — RENDERIZAR
+// =====================
+function renderizarQuizzes(){
+  Object.keys(QUIZZES).forEach(function(m){
+    var c=document.getElementById('quiz-'+m);if(!c)return;
+    var letras=['A','B','C','D'];var html='';
+    QUIZZES[m].forEach(function(q,i){
+      html+='<div class="quiz-item"><div class="quiz-pergunta"><span class="quiz-pergunta-num">Questão '+(i+1)+' de '+QUIZZES[m].length+'</span>'+q.p+'</div><div class="quiz-opcoes">';
+      q.o.forEach(function(op,oi){html+='<label class="quiz-opcao"><input type="radio" name="'+m+'_q'+i+'" value="'+oi+'"> <span>'+letras[oi]+') '+op+'</span></label>';});
+      html+='</div></div>';
+    });
+    c.innerHTML=html;
+    var res=document.getElementById('res-'+m);if(res){res.className='mod-resultado';res.textContent='';}
+    var btn=document.getElementById('btn-'+m);if(btn){btn.textContent='Verificar respostas';btn.disabled=false;btn.style.background='';}
+    var prox=document.getElementById('prox-'+m);if(prox)prox.style.display='none';
+    var cnt=document.getElementById('excount-'+m);if(cnt)cnt.textContent='0 / '+QUIZZES[m].length+' corretos';
+  });
+}
+
+// =====================
+// QUIZ — VERIFICAR
+// =====================
+function verificarQuiz(m){
+  var perguntas=QUIZZES[m];var acertos=0;var tudoRespondido=true;
+  perguntas.forEach(function(q,i){
+    var sel=document.querySelector('input[name="'+m+'_q'+i+'"]:checked');
+    document.querySelectorAll('input[name="'+m+'_q'+i+'"]').forEach(function(inp){inp.parentElement.classList.remove('correta-marcada','errada-marcada');inp.disabled=true;});
+    if(!sel){tudoRespondido=false;document.querySelectorAll('input[name="'+m+'_q'+i+'"]').forEach(function(inp){inp.disabled=false;});return;}
+    if(parseInt(sel.value)===q.c){sel.parentElement.classList.add('correta-marcada');acertos++;}
+    else{sel.parentElement.classList.add('errada-marcada');var corr=document.querySelector('input[name="'+m+'_q'+i+'"][value="'+q.c+'"]');if(corr)corr.parentElement.classList.add('correta-marcada');}
+  });
+  var res=document.getElementById('res-'+m);var cnt=document.getElementById('excount-'+m);
+  if(!tudoRespondido){res.textContent='⚠ Responda todas as questões antes de verificar.';res.className='mod-resultado parcial';return;}
+  var total=perguntas.length;var pct=Math.round((acertos/total)*100);
+  if(cnt)cnt.textContent=acertos+' / '+total+' corretos';
+  if(acertos===total){res.textContent='🎉 Perfeito! Você acertou todas as '+total+' questões!';res.className='mod-resultado certo';}
+  else if(acertos>=Math.ceil(total/2)){res.textContent='👍 Você acertou '+acertos+' de '+total+' ('+pct+'%). Bom trabalho!';res.className='mod-resultado parcial';}
+  else{res.textContent='📖 Você acertou '+acertos+' de '+total+'. Revise a teoria e tente novamente.';res.className='mod-resultado errado';}
+  salvarProgresso(m,pct);atualizarBarra(m,pct);
+  var btn=document.getElementById('btn-'+m);if(btn){btn.disabled=true;btn.textContent=acertos===total?'Concluído ✓':'Verificado';if(acertos===total)btn.style.background='var(--verde)';}
+  if(pct>=50){var prox=document.getElementById('prox-'+m);if(prox)prox.style.display='inline-block';}
+}
+
+// =====================
+// CODING — RENDERIZAR
+// =====================
+function renderizarCodingExercises(){
+  Object.keys(CODING_EXERCISES).forEach(function(m){
+    var c=document.getElementById('coding-'+m);if(!c)return;
+    var exs=CODING_EXERCISES[m];var html='';
+    exs.forEach(function(ex,idx){
+      html+='<div class="coding-item" id="cex-'+ex.id+'">';
+      html+='<div class="coding-header"><span class="coding-num">Desafio '+(idx+1)+'</span><h5>'+ex.titulo+'</h5></div>';
+      html+='<div class="coding-body">';
+      html+='<p class="coding-descricao">'+ex.descricao+'</p>';
+      html+='<div class="coding-dica"><span>💡</span> <span>'+ex.dica+'</span></div>';
+      html+='<div class="editor-wrap"><div class="editor-bar"><span class="editor-lang">C</span><span class="editor-filename">solucao.c</span></div>';
+      html+='<textarea class="code-editor" id="editor-'+ex.id+'" spellcheck="false">'+ex.starter+'</textarea></div>';
+      html+='<div class="coding-feedback hidden" id="feedback-'+ex.id+'"></div>';
+      html+='<div class="coding-acoes"><button class="btn-verificar-codigo" id="btnc-'+ex.id+'" onclick="verificarCodigo(\''+ex.id+'\',\''+m+'\')"><span>▶</span> Verificar código</button>';
+      html+='<button class="btn-resetar-codigo" onclick="resetarCodigo(\''+ex.id+'\')">↺ Resetar</button></div>';
+      html+='</div></div>';
+    });
+    c.innerHTML=html;
+    exs.forEach(function(ex){var salvo=localStorage.getItem('code_'+ex.id);if(salvo){var ta=document.getElementById('editor-'+ex.id);if(ta)ta.value=salvo;}});
+  });
+}
+
+function resetarCodigo(exId){
+  var m=exId.split('_')[0]==='func'?'funcoes':exId.split('_')[0]==='ctrl'?'controle':exId.split('_')[0]==='var'?'variaveis':'intro';
+  var ex=(CODING_EXERCISES[m]||[]).find(function(e){return e.id===exId;});if(!ex)return;
+  var ta=document.getElementById('editor-'+exId);if(ta)ta.value=ex.starter;
+  localStorage.removeItem('code_'+exId);
+  var fb=document.getElementById('feedback-'+exId);if(fb){fb.className='coding-feedback hidden';fb.innerHTML='';}
+  var btn=document.getElementById('btnc-'+exId);if(btn){btn.disabled=false;btn.innerHTML='<span>▶</span> Verificar código';btn.style.background='';}
+}
+
+// =====================
+// CODING — VERIFICAR VIA API
+// =====================
+function verificarCodigo(exId,modulo){
+  var ex=(CODING_EXERCISES[modulo]||[]).find(function(e){return e.id===exId;});if(!ex)return;
+  var ta=document.getElementById('editor-'+exId);
+  var codigo=ta?ta.value.trim():'';
+  if(!codigo||codigo===ex.starter.trim()){mostrarFeedback(exId,'fb-aviso','⚠️ Escreva sua solução antes de verificar!');return;}
+  localStorage.setItem('code_'+exId,codigo);
+  var btn=document.getElementById('btnc-'+exId);
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="btnc-spin">⏳</span> Analisando...';}
+  mostrarFeedback(exId,'fb-carregando','🤖 A IA está analisando seu código...');
+
+  var prompt='Você é um professor de linguagem C avaliando o código de um aluno iniciante.\n\nEXERCÍCIO: '+ex.titulo+'\nDESCRIÇÃO: '+ex.descricao.replace(/<[^>]+>/g,'')+'\nCRITÉRIO: '+ex.criterio+'\n\nCÓDIGO DO ALUNO:\n```c\n'+codigo+'\n```\n\nAvalie e responda SOMENTE em JSON válido (sem markdown, sem texto fora do JSON):\n{"aprovado": true/false, "nota": "Ótimo!"/"Bom!"/"Quase lá!"/"Tente novamente", "feedback": "explicação curta em português (máx 2 frases)", "dica": "dica específica se não aprovado, vazio se aprovado"}';
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var texto=(data.content||[]).map(function(b){return b.text||'';}).join('');
+    var limpo=texto.replace(/```json|```/g,'').trim();
+    var resultado;
+    try{resultado=JSON.parse(limpo);}catch(e){resultado={aprovado:false,nota:'Erro',feedback:'Não foi possível analisar. Tente novamente.',dica:''};}
+    var tipo=resultado.aprovado?'certo':'errado';
+    var html='<div class="fb-nota fb-'+tipo+'">'+resultado.nota+'</div>';
+    html+='<p class="fb-texto">'+resultado.feedback+'</p>';
+    if(resultado.dica)html+='<p class="fb-dica">💡 '+resultado.dica+'</p>';
+    mostrarFeedback(exId,tipo,html);
+    if(btn){btn.disabled=resultado.aprovado;btn.innerHTML=resultado.aprovado?'✓ Aprovado!':'<span>▶</span> Tentar novamente';if(resultado.aprovado)btn.style.background='var(--verde)';}
+    if(resultado.aprovado)localStorage.setItem('code_ok_'+exId,'1');
+  })
+  .catch(function(){
+    mostrarFeedback(exId,'fb-aviso','⚠️ Erro de conexão. Verifique sua internet e tente novamente.');
+    if(btn){btn.disabled=false;btn.innerHTML='<span>▶</span> Verificar código';}
+  });
+}
+
+function mostrarFeedback(exId,tipo,html){var fb=document.getElementById('feedback-'+exId);if(!fb)return;fb.className='coding-feedback '+tipo;fb.innerHTML=html;}
+
+// =====================
+// CONCLUSÃO
+// =====================
+function concluirTrilha(){
+  var totalAcertos=0;var totalQs=0;
+  ORDEM.forEach(function(m){var pct=parseInt(localStorage.getItem('prog_'+m)||0);var qs=QUIZZES[m].length;totalAcertos+=Math.round((pct/100)*qs);totalQs+=qs;});
+  var ap=Math.round((totalAcertos/totalQs)*100);
+  document.getElementById('modal-acertos').textContent=totalAcertos+'/'+totalQs;
+  document.getElementById('modal-pct').textContent=ap+'%';
+  document.getElementById('modal-conclusao').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+function fecharModal(){document.getElementById('modal-conclusao').classList.add('hidden');document.body.style.overflow='';}
+
+window.onload=function(){renderizarQuizzes();renderizarCodingExercises();carregarProgresso();};
+  </script>
+</body>
+</html>
