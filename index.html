@@ -3,152 +3,162 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aprenda.C — Aprenda C do zero</title>
+  <title>Módulo 3 — Estruturas de controle · Aprenda.C</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <nav class="navbar">
     <div class="logo">Aprenda<span class="logo-accent">.</span>C</div>
-    <div class="nav-links">
-      <a href="#">Início</a>
-      <a href="#modulos">Módulos</a>
-      <a href="#sobre">Sobre</a>
-    </div>
+    <div class="nav-links"><a href="../../index.html">Início</a><a href="../../index.html#modulos">Módulos</a></div>
     <button class="btn-login" onclick="alert('Login em breve!')">Entrar</button>
   </nav>
-
-  <section class="hero">
-    <div class="hero-content">
-      <span class="badge">Gratuito · Para iniciantes</span>
-      <h1>Aprenda linguagem <span class="highlight">C</span> do zero</h1>
-      <p>Teoria clara, exercícios interativos e desafios de código com compilação real para quem está começando agora.</p>
-      <div class="hero-btns">
-        <a href="#modulos" class="btn-primary">Começar agora</a>
-        <a href="#sobre" class="btn-secondary">Saiba mais</a>
-      </div>
-    </div>
-    <div class="hero-code">
-      <div class="code-window">
-        <div class="code-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="code-filename">main.c</span>
-        </div>
-        <pre class="code-body"><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
-
-<span class="kw">int</span> <span class="fn">main</span>() {
-    <span class="fn">printf</span>(<span class="str">"Hello, World!\n"</span>);
-    <span class="kw">return</span> <span class="num">0</span>;
-}</pre>
-      </div>
-    </div>
-  </section>
-
-  <section class="stats">
-    <div class="stat"><span class="stat-num">4</span><span class="stat-label">Módulos</span></div>
-    <div class="stat"><span class="stat-num">40+</span><span class="stat-label">Exercícios</span></div>
-    <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Gratuito</span></div>
-    <div class="stat"><span class="stat-num">0</span><span class="stat-label">Pré-requisitos</span></div>
-  </section>
-
-  <div class="painel-progresso">
-    <div class="painel-inner">
-      <div class="painel-texto">
-        <h3>Seu progresso geral</h3>
-        <p id="painel-desc">Você ainda não começou nenhum módulo.</p>
-      </div>
-      <div class="painel-barra-wrap">
-        <div class="painel-barra"><div class="painel-fill" id="painel-fill" style="width:0%"></div></div>
-        <span class="painel-pct" id="painel-pct">0%</span>
-      </div>
-    </div>
+  <div class="modulo-progresso">
+    <span class="progresso-texto" id="texto-progresso">Quiz: pendente · Código: 0 de 2</span>
+    <div class="progresso-barra"><div class="progresso-fill" id="barra-progresso" style="width:0%"></div></div>
+    <span class="progresso-texto" id="pct-progresso">0%</span>
   </div>
+  <div class="modulo-container">
+    <aside class="sidebar">
+      <div class="sidebar-titulo">Módulo 3 — Controle</div>
+      <div class="sidebar-item ativo" onclick="irPara('teoria')"><span class="icone-status">📖</span> Teoria</div>
+      <div class="sidebar-item" onclick="irPara('quiz')"><span class="icone-status">🎯</span> Quiz</div>
+      <div class="sidebar-item" onclick="irPara('codigo')"><span class="icone-status">⌨️</span> Desafios de código</div>
+    </aside>
+    <main class="conteudo-principal">
+      <div class="modulo-badge"><a href="../../index.html">Início</a> › Módulo 3</div>
+      <h1 class="modulo-titulo">Estruturas de controle</h1>
+      <p class="modulo-desc">Aprenda a controlar o fluxo do seu programa com condicionais e laços de repetição.</p>
 
-  <section class="section" id="modulos">
-    <div class="section-header">
-      <h2>Trilha de aprendizado</h2>
-      <p>Siga os módulos em ordem ou vá direto ao que precisa.</p>
-    </div>
-    <div class="modules-grid">
-
-      <button class="module-card" onclick="abrirModulo('intro')">
-        <div class="module-icon" style="background:#fdecea;">🏁</div>
-        <div class="module-info">
-          <h3>Módulo 1 — Introdução ao C</h3>
-          <p>História, estrutura, primeiro programa, compilação</p>
-          <div class="progress-bar"><div class="progress-fill" id="fill-intro" style="width:0%"></div></div>
-          <span class="progress-label" id="label-intro">Não iniciado</span>
+      <div id="teoria" class="teoria-secao">
+        <h2>Condicionais — if / else</h2>
+        <p>Permitem executar blocos de código apenas se uma condição for verdadeira.</p>
+        <div class="codigo-exemplo">
+          <div class="topo"><span>condicional.c</span></div>
+          <pre><span class="kw">int</span> nota = <span class="num">7</span>;
+<span class="kw">if</span> (nota >= <span class="num">7</span>) {
+    <span class="fn">printf</span>(<span class="str">"Aprovado!\n"</span>);
+} <span class="kw">else if</span> (nota >= <span class="num">5</span>) {
+    <span class="fn">printf</span>(<span class="str">"Recuperacao\n"</span>);
+} <span class="kw">else</span> {
+    <span class="fn">printf</span>(<span class="str">"Reprovado\n"</span>);
+}</pre>
         </div>
-      </button>
-
-      <button class="module-card" onclick="abrirModulo('variaveis')">
-        <div class="module-icon" style="background:#eaf7ee;">📦</div>
-        <div class="module-info">
-          <h3>Módulo 2 — Variáveis e tipos</h3>
-          <p>int, float, double, char, scanf, operadores</p>
-          <div class="progress-bar"><div class="progress-fill" id="fill-variaveis" style="width:0%"></div></div>
-          <span class="progress-label" id="label-variaveis">Não iniciado</span>
+        <div class="tabela-tipos">
+          <div class="tipo-row header"><span>Operador</span><span>Significado</span><span>Exemplo</span></div>
+          <div class="tipo-row"><span><code>==</code></span><span>Igual a</span><span><code>a == b</code></span></div>
+          <div class="tipo-row"><span><code>!=</code></span><span>Diferente de</span><span><code>a != b</code></span></div>
+          <div class="tipo-row"><span><code>&gt;</code></span><span>Maior que</span><span><code>a &gt; b</code></span></div>
+          <div class="tipo-row"><span><code>&lt;</code></span><span>Menor que</span><span><code>a &lt; b</code></span></div>
+          <div class="tipo-row"><span><code>&gt;=</code></span><span>Maior ou igual</span><span><code>a &gt;= b</code></span></div>
+          <div class="tipo-row"><span><code>&lt;=</code></span><span>Menor ou igual</span><span><code>a &lt;= b</code></span></div>
         </div>
-      </button>
+        <div class="destaque">⚠️ Cuidado: <code>=</code> é atribuição, <code>==</code> é comparação! Usar <code>=</code> dentro de um if é um erro clássico.</div>
 
-      <button class="module-card" onclick="abrirModulo('controle')">
-        <div class="module-icon" style="background:#fff8e8;">🔀</div>
-        <div class="module-info">
-          <h3>Módulo 3 — Estruturas de controle</h3>
-          <p>if/else, switch, for, while, do-while</p>
-          <div class="progress-bar"><div class="progress-fill" id="fill-controle" style="width:0%"></div></div>
-          <span class="progress-label" id="label-controle">Não iniciado</span>
+        <h2>switch / case</h2>
+        <p>Útil quando se quer testar um valor contra várias opções fixas.</p>
+        <div class="codigo-exemplo">
+          <div class="topo"><span>switch.c</span></div>
+          <pre><span class="kw">int</span> dia = <span class="num">2</span>;
+<span class="kw">switch</span> (dia) {
+    <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printf</span>(<span class="str">"Segunda\n"</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">2</span>: <span class="fn">printf</span>(<span class="str">"Terca\n"</span>);   <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">3</span>: <span class="fn">printf</span>(<span class="str">"Quarta\n"</span>);  <span class="kw">break</span>;
+    <span class="kw">default</span>: <span class="fn">printf</span>(<span class="str">"Outro dia\n"</span>);
+}</pre>
         </div>
-      </button>
 
-      <button class="module-card" onclick="abrirModulo('funcoes')">
-        <div class="module-icon" style="background:#fdf0f0;">⚙️</div>
-        <div class="module-info">
-          <h3>Módulo 4 — Funções</h3>
-          <p>Declaração, parâmetros, retorno, recursão</p>
-          <div class="progress-bar"><div class="progress-fill" id="fill-funcoes" style="width:0%"></div></div>
-          <span class="progress-label" id="label-funcoes">Não iniciado</span>
+        <h2>Laço for</h2>
+        <p>Usado quando se sabe o número de repetições. Sintaxe: <code>for (início; condição; incremento)</code>.</p>
+        <div class="codigo-exemplo">
+          <div class="topo"><span>for.c</span></div>
+          <pre><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= <span class="num">5</span>; i++) {
+    <span class="fn">printf</span>(<span class="str">"%d\n"</span>, i);
+}
+<span class="cm">// Imprime: 1 2 3 4 5 (um por linha)</span></pre>
         </div>
-      </button>
 
-    </div>
-  </section>
+        <h2>Laço while</h2>
+        <p>Repete enquanto a condição for verdadeira. Ideal quando não se sabe o número de repetições.</p>
+        <div class="codigo-exemplo">
+          <div class="topo"><span>while.c</span></div>
+          <pre><span class="kw">int</span> i = <span class="num">1</span>;
+<span class="kw">while</span> (i <= <span class="num">5</span>) {
+    <span class="fn">printf</span>(<span class="str">"%d\n"</span>, i);
+    i++;
+}</pre>
+        </div>
 
-  <section class="section section-alt" id="sobre">
-    <div class="section-header">
-      <h2>Sobre o projeto</h2>
-      <p>Este site foi criado como projeto integrador com o objetivo de tornar o aprendizado de C acessível para todos.</p>
-    </div>
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon">📖</div>
-        <h4>Teoria clara</h4>
-        <p>Conteúdo explicativo com exemplos de código reais</p>
+        <h2>do / while</h2>
+        <p>Similar ao while, mas garante que o bloco executa <strong>pelo menos uma vez</strong>.</p>
+        <div class="codigo-exemplo">
+          <div class="topo"><span>dowhile.c</span></div>
+          <pre><span class="kw">int</span> i = <span class="num">1</span>;
+<span class="kw">do</span> {
+    <span class="fn">printf</span>(<span class="str">"%d\n"</span>, i);
+    i++;
+} <span class="kw">while</span> (i <= <span class="num">5</span>);</pre>
+        </div>
       </div>
-      <div class="feature">
-        <div class="feature-icon">🎯</div>
-        <h4>Quizzes interativos</h4>
-        <p>Fixe o conteúdo com questões de múltipla escolha</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">⌨️</div>
-        <h4>Código de verdade</h4>
-        <p>Escreva e execute C real no navegador via Judge0</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📊</div>
-        <h4>Progresso salvo</h4>
-        <p>Acompanhe sua evolução em cada módulo</p>
-      </div>
-    </div>
-  </section>
 
-  <footer class="footer">
-    <p>Aprenda C · Projeto Integrador 2026</p>
-  </footer>
+      <div id="quiz" class="quiz-secao">
+        <h2>Quiz do módulo <span class="ex-contador" id="excount-controle"></span></h2>
+        <p>Responda todas as questões e clique em Verificar.</p>
+        <div id="quiz-controle"></div>
+        <div class="quiz-resultado" id="res-controle"></div>
+        <div class="quiz-acoes">
+          <button class="btn-verificar" id="btn-quiz-controle" onclick="verificarQuiz()">Verificar respostas</button>
+        </div>
+      </div>
 
+      <div id="codigo" class="coding-secao">
+        <h2>Desafios de código</h2>
+        <p>Escreva código C real compilado e executado via Judge0!</p>
+
+        <div class="exercicio-card">
+          <div class="exercicio-header"><span class="exercicio-num">Desafio 1</span><span class="exercicio-dificuldade dif-facil">Fácil</span></div>
+          <div class="exercicio-enunciado">
+            <h3>Tabuada do 3</h3>
+            <p>Use um laço <code>for</code> para imprimir a tabuada do 3 de 1 a 5:</p>
+            <div class="saida-esperada"><strong>Saída esperada</strong>3 x 1 = 3
+3 x 2 = 6
+3 x 3 = 9
+3 x 4 = 12
+3 x 5 = 15</div>
+            <div class="dica-box"><span>💡</span><span>Use <code>printf("3 x %d = %d\n", i, 3*i)</code> dentro do for.</span></div>
+          </div>
+          <div class="editor-topo"><span><span class="editor-lang">C</span> &nbsp; solucao.c</span><button class="btn-limpar" onclick="limparEditor('ctrl_1', '')">↺ Limpar</button></div>
+          <textarea class="editor-codigo" id="editor-ctrl_1" spellcheck="false" placeholder="Escreva seu código aqui..."></textarea>
+          <div class="terminal"><div class="terminal-label">Saída do programa</div><div class="terminal-output aguardando" id="saida-ctrl_1">Clique em "Executar" para ver o resultado...</div></div>
+          <div class="exercicio-rodape">
+            <div class="feedback-exercicio" id="feedback-ctrl_1"></div>
+            <button class="btn-executar" id="btn-ctrl_1" onclick="executar('ctrl_1', '3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15')"><div class="spinner" id="spin-ctrl_1"></div>▶ Executar</button>
+          </div>
+        </div>
+
+        <div class="exercicio-card">
+          <div class="exercicio-header"><span class="exercicio-num">Desafio 2</span><span class="exercicio-dificuldade dif-medio">Médio</span></div>
+          <div class="exercicio-enunciado">
+            <h3>Par ou ímpar com if</h3>
+            <p>Declare <code>int n = 7</code>. Use um <code>if/else</code> para imprimir se é par ou ímpar:</p>
+            <div class="saida-esperada"><strong>Saída esperada</strong>7 e impar</div>
+            <div class="dica-box"><span>💡</span><span>Use o operador <code>%</code>: se <code>n % 2 == 0</code> é par, senão é ímpar.</span></div>
+          </div>
+          <div class="editor-topo"><span><span class="editor-lang">C</span> &nbsp; solucao.c</span><button class="btn-limpar" onclick="limparEditor('ctrl_2', '')">↺ Limpar</button></div>
+          <textarea class="editor-codigo" id="editor-ctrl_2" spellcheck="false" placeholder="Escreva seu código aqui..."></textarea>
+          <div class="terminal"><div class="terminal-label">Saída do programa</div><div class="terminal-output aguardando" id="saida-ctrl_2">Clique em "Executar" para ver o resultado...</div></div>
+          <div class="exercicio-rodape">
+            <div class="feedback-exercicio" id="feedback-ctrl_2"></div>
+            <button class="btn-executar" id="btn-ctrl_2" onclick="executar('ctrl_2', '7 e impar')"><div class="spinner" id="spin-ctrl_2"></div>▶ Executar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-modulo">
+        <a href="../variaveis/index.html" class="btn-nav"><span>←</span><span><span class="nav-label">Módulo anterior</span><span class="nav-titulo">Variáveis e tipos</span></span></a>
+        <a href="../funcoes/index.html" class="btn-nav"><span><span class="nav-label">Próximo módulo</span><span class="nav-titulo">Funções</span></span><span>→</span></a>
+      </div>
+    </main>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
